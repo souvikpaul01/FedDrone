@@ -118,8 +118,18 @@ public class ServerConnection implements Runnable {
         output.writeDouble(timeTaken);
         System.out.println(response);
         System.out.println("receive paramTable successful from client " + id);
+
         System.out.println(paramTable);
         FileServer.cache.put(id, paramTable);
+        FileServer.map.replace(id, 1);
+        System.out.println("Compplte from client " + id);
+//        try {
+//            FileServer.fed();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
+
     }
 
     private void upload() throws IOException, ClientError {

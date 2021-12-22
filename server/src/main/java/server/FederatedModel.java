@@ -39,18 +39,17 @@ import java.util.*;
 public class FederatedModel {
 
     public static int numOutputs = 6;
-    public static int batchSize = 16;
     private static final int HEIGHT = 32;
     private static final int WIDTH = 32;
     private static final int CHANNELS = 3;
     private static final int N_OUTCOMES = 6 ;
-    private static final int N_SAMPLES_TESTING = 507;
+    private static final int N_SAMPLES_TESTING = 136;
 
-    int nSamples = 507;
 
-    String filenameTrain = "/home/ubuntu/FL3Tier/server/res/trashnet/test/";
-    private static final String RESOURCES_FOLDER_PATH ="/home/ubuntu/FL3Tier/server/res/trashnet/test/";
 
+
+
+    private static final String RESOURCES_FOLDER_PATH ="C:\\Users\\souvik\\Downloads\\dev\\FL3Tier\\client0\\res\\data_c\\test\\";
 
     public static MultiLayerNetwork model = null;
     private static final String serverModel = "res/serverModel/server_model.zip";
@@ -62,17 +61,12 @@ public class FederatedModel {
         System.out.println("Start conduct fedavg aggregation");
 
         INDArray[][] res = new INDArray[4][2];
-
         INDArray weightTmp_2;
         INDArray biasTmp_2;
         INDArray weightTmp_4;
         INDArray biasTmp_4;
-//        INDArray weightTmp_5;
-//        INDArray biasTmp_5;
-        INDArray weightTmp_6;
-        INDArray biasTmp_6;
-        INDArray weightTmp_7;
-        INDArray biasTmp_7;
+        INDArray weightTmp_5;
+        INDArray biasTmp_5;
 
         INDArray weight_2;
         INDArray bias_2;
@@ -80,14 +74,9 @@ public class FederatedModel {
         INDArray weight_4;
         INDArray bias_4;
 
-//        INDArray weight_5;
-//        INDArray bias_5;
+        INDArray weight_5;
+        INDArray bias_5;
 
-        INDArray weight_6;
-        INDArray bias_6;
-
-        INDArray weight_7;
-        INDArray bias_7;
 
         Map<String, INDArray> paramTable = cache.get(1);
 //        System.out.println("The weight of 2 layer is " + paramTable.get(String.format("%d_W", 2)));
@@ -96,12 +85,8 @@ public class FederatedModel {
         bias_2 = paramTable.get(String.format("%d_b", 2));
         weight_4 = paramTable.get(String.format("%d_W", 4));
         bias_4 = paramTable.get(String.format("%d_b", 4));
-//        weight_5 = paramTable.get(String.format("%d_W", 5));
-//        bias_5 = paramTable.get(String.format("%d_b", 5));
-        weight_6 = paramTable.get(String.format("%d_W", 6));
-        bias_6 = paramTable.get(String.format("%d_b", 6));
-        weight_7 = paramTable.get(String.format("%d_W", 7));
-        bias_7 = paramTable.get(String.format("%d_b", 7));
+        weight_5 = paramTable.get(String.format("%d_W", 5));
+        bias_5 = paramTable.get(String.format("%d_b", 5));
 
         for (int i = 2; i < K + 1; i++) {
             if (cache.containsKey(i)) {
@@ -110,68 +95,54 @@ public class FederatedModel {
                 biasTmp_2 = paramTableTmp.get(String.format("%d_b", 2));
                 weightTmp_4 = paramTableTmp.get(String.format("%d_W", 4));
                 biasTmp_4 = paramTableTmp.get(String.format("%d_b", 4));
-//                weightTmp_5 = paramTableTmp.get(String.format("%d_W", 5));
-//                biasTmp_5 = paramTableTmp.get(String.format("%d_b", 5));
-                weightTmp_6 = paramTableTmp.get(String.format("%d_W", 6));
-                biasTmp_6 = paramTableTmp.get(String.format("%d_b", 6));
-                weightTmp_7 = paramTableTmp.get(String.format("%d_W",7));
-                biasTmp_7 = paramTableTmp.get(String.format("%d_b", 7));
+                weightTmp_5 = paramTableTmp.get(String.format("%d_W", 5));
+                biasTmp_5 = paramTableTmp.get(String.format("%d_b", 5));
                 weight_2 = weight_2.add(weightTmp_2);
                 bias_2 = bias_2.add(biasTmp_2);
                 weight_4 = weight_4.add(weightTmp_4);
                 bias_4 = bias_4.add(biasTmp_4);
-//                weight_5 = weight_5.add(weightTmp_5);
-//                bias_5 = bias_5.add(biasTmp_5);
-                weight_6 = weight_6.add(weightTmp_6);
-                bias_6 = bias_6.add(biasTmp_6);
-                weight_7 = weight_7.add(weightTmp_7);
-                bias_7 = bias_7.add(biasTmp_7);
+                weight_5 = weight_5.add(weightTmp_5);
+                bias_5 = bias_5.add(biasTmp_5);
             }
         }
 
         weight_2 = weight_2.div(K);
         weight_4 = weight_4.div(K);
-//        weight_5 = weight_5.div(K);
-        weight_6 = weight_6.div(K);
-        weight_7 = weight_7.div(K);
+        weight_5 = weight_5.div(K);
         bias_2 = bias_2.div(K);
         bias_4 = bias_4.div(K);
-//        bias_5 = bias_5.div(K);
-        bias_6 = bias_6.div(K);
-        bias_7 = bias_7.div(K);
-
+        bias_5 = bias_5.div(K);
 
         model.setParam(String.format("%d_W", 2), weight_2);
         model.setParam(String.format("%d_b", 2), bias_2);
         model.setParam(String.format("%d_W", 4), weight_4);
         model.setParam(String.format("%d_b", 4), bias_4);
-
-        model.setParam(String.format("%d_W", 6), weight_6);
-        model.setParam(String.format("%d_b", 6), bias_6);
-        model.setParam(String.format("%d_W", 7), weight_7);
-        model.setParam(String.format("%d_b", 7), bias_7);
+        model.setParam(String.format("%d_W", 5), weight_5);
+        model.setParam(String.format("%d_b", 5), bias_5);
 
         res[0][0] = weight_2;
         res[0][1] = bias_2;
         res[1][0] = weight_4;
         res[1][1] = bias_4;
+        res[2][0] = weight_5;
+        res[2][1] = bias_5;
 
-        res[2][0] = weight_6;
-        res[2][1] = bias_6;
-        res[3][0] = weight_7;
-        res[3][1] = bias_7;
-
+//        model.setParam(String.format("%d_W", layer), weight);
 
         System.out.println("\nWriting server model...");
         ModelSerializer.writeModel(model, serverModel, false);
 
-        DataSetIterator testDsi = getDataSetIterator(RESOURCES_FOLDER_PATH, N_SAMPLES_TESTING);
+//        evaluateModel();
+//        cache.clear();
+        DataSetIterator testDsi = getDataSetIterator(RESOURCES_FOLDER_PATH + "/testing", N_SAMPLES_TESTING);
         System.out.println("Evaluating Model...");
         Evaluation eval = model.evaluate(testDsi);
         System.out.println(eval.stats());
 
         return res;
     }
+
+
 
     private static DataSetIterator getDataSetIterator(String folderPath, int nSamples) throws IOException {
         try {
@@ -189,7 +160,7 @@ public class FederatedModel {
             //scan all 0 to 9 digit subfolders
             for (File digitFolder : digitFolders) {
 
-
+//                System.out.println("the name is " + digitFolder.getName());
                 int labelDigit = Integer.parseInt(digitFolder.getName());
                 File[] imageFiles = digitFolder.listFiles();
 
@@ -220,49 +191,6 @@ public class FederatedModel {
     } //End of DataIterator Method
 
 
-    // average weights over mobile devices' models
-    public void AverageWeights(int layer, double alpha, int K) throws IOException {
-        System.out.println("The number of client is: " + K);
-
-        //original model
-        Map<String, INDArray> paramTable = model.paramTable();
-        System.out.println(paramTable);
-        INDArray weight = paramTable.get(String.format("%d_W", layer));
-        INDArray bias = paramTable.get(String.format("%d_b", layer));
-        INDArray avgWeights = weight.mul(alpha);
-        //System.out.println("the avgWeight is :\n" + avgWeights);
-        INDArray avgBias = bias.mul(alpha);
-        //System.out.println("the avgBias is :\n" + avgBias);
-
-        // average weights over mobile devices' models
-        System.out.println("\nAveraging weights...");
-
-        MultiLayerNetwork transferred_model = null;
-        for (int i = 1; i < K + 1; i++) {
-
-            if (FileServer.cache.containsKey(i)) {
-                System.out.println("enter cache");
-                paramTable = FileServer.cache.get(i);
- 
-                weight = paramTable.get("weight");
-
-                bias = paramTable.get("bias");
-
-                avgWeights = avgWeights.add(weight.mul(1.0 - alpha).div(K));
-                avgBias = avgBias.add(bias.mul(1.0 - alpha).div(K));
-            }
-        }
-
-        model.setParam(String.format("%d_W", layer), avgWeights);
-        model.setParam(String.format("%d_b", layer), avgBias);
-
-        System.out.println("\nWriting server model...");
-        ModelSerializer.writeModel(model, serverModel, false);
-        System.out.println("\nWriting server model Finished...");
-        evaluateModel();
-
-        FileServer.cache.clear();
-    }
 
     public static void delete(List<File> files) {
         System.out.println("Deleting files...");
@@ -273,53 +201,15 @@ public class FederatedModel {
         System.out.println("Files deleted");
     }
 
-    public  void evaluateModel() throws IOException {
 
-
-        File folder = new File(filenameTrain);
-        File[] digitFolders = folder.listFiles();
-
-        NativeImageLoader nativeImageLoader = new NativeImageLoader(HEIGHT, WIDTH);
-        ImagePreProcessingScaler scalar = new ImagePreProcessingScaler(0,1);
-        INDArray input = Nd4j.create(new int[]{nSamples, HEIGHT*WIDTH});
-        INDArray output = Nd4j.create(new int[]{nSamples, N_OUTCOMES});
-
-        int n = 0;
-        for (File digitFolder: digitFolders) {
-            int labelDigit = Integer.parseInt(digitFolder.getName());
-            File[] imageFiles = digitFolder.listFiles();
-
-            for (File imgFile : imageFiles) {
-                INDArray img = nativeImageLoader.asRowVector(imgFile);
-                //INDArray img = nativeImageLoader.asMatrix(imgFile);
-                scalar.transform(img);
-                input.putRow(n, img);
-                output.put(n, labelDigit, 1.0);
-                n++;
-            }
-        }
-        //Joining input and output matrices into a dataset
-        DataSet dataSet = new DataSet(input, output);
-        //Convert the dataset into a list
-        List<DataSet> listDataSet = dataSet.asList();
-        //Shuffle content of list randomly
-        Collections.shuffle(listDataSet, new Random(System.currentTimeMillis()));
-
-        //Build and return a dataset iterator
-        DataSetIterator testDsi = new ListDataSetIterator<DataSet>(listDataSet, batchSize);
-
-
-        System.out.print("Evaluating Model...");
-        Evaluation eval = model.evaluate(testDsi);
-        System.out.print(eval.stats());
-    }
 
 
     public void initModel() throws IOException {
 
         System.out.println("initing model...");
         int seed = 100;
-        int round = 5;
+       // double learningRate = 0.001;
+        int round = 10;
         int numHiddenNodes = 1000;
 
 
@@ -367,6 +257,7 @@ public class FederatedModel {
                         .build())
                 .setInputType(InputType.convolutionalFlat(HEIGHT, WIDTH, CHANNELS))
                 .build();
+
 
         model = new MultiLayerNetwork(conf);
         model.conf();

@@ -1,5 +1,7 @@
 package server;
 
+
+
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.util.ModelSerializer;
 import org.nd4j.linalg.api.ndarray.INDArray;
@@ -8,16 +10,19 @@ import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FileServer {
 
     public static String onDeviceModelPath = "res/clientModel";
     public static Map<Integer, Map<String, INDArray>> cache = new HashMap<>();
+    public static Map<Integer, Integer> map = new HashMap<>();
     public static FederatedModel federatedmodel = new FederatedModel();
     private static ServerSocket serverSocket;
-    private static int clientNum = 3;
+    public static int clientNum = 3;
 
     private void init(int port, int timeout) {
         try {
@@ -30,22 +35,48 @@ public class FileServer {
         System.out.println("Server started on port " + port + " with timeout " + timeout + "ms");
     }
 
-    private void run() throws InterruptedException {
+    public void run() throws InterruptedException {
+
 
         int curID = 1;
+        map.put(1, 0);
+        map.put(2, 0);
+        map.put(3, 0);
         // here plus 2
-        while (curID < clientNum + 1) {
+        while ((curID < (clientNum + 1))) {
             try {
                 Socket clientSocket = serverSocket.accept();
-                new Thread((Runnable) new ServerConnection(clientSocket, curID)).start();
+                Thread t1 = new Thread((Runnable) new ServerConnection(clientSocket, curID));
+                t1.start();
                 System.out.println("client " + curID + " connected!");
+                System.out.println(map);
+                t1.join();
                 curID++;
             } catch (IOException e) {
                 System.out.println("Error accepting client connection: " + e.getMessage());
             }
 
         }
+
         System.out.println("exit the while loop");
+    }
+
+    public static void fedAvgRun() throws InterruptedException {
+        int i = 1;
+        if ((map.get(i) == 1) & (map.get(i+1) == 1) & (map.get(i+2) == 1)){
+            System.out.println(map.get(i+1));
+            System.out.println("the cache size is " + cache.size());
+            map.clear();
+            try {
+                map.clear();
+               federatedmodel.fedavg(2, cache);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            System.out.println(map.size());
+        }
     }
 
 
@@ -64,15 +95,16 @@ public class FileServer {
         for (int r = 0; r < round; r++) {
             System.out.println("\n\nround:" + r);
             fileserver.run();
+            try {
+                FileServer.fedAvgRun();
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-            // need to add time to wait for the upload
-            Thread.sleep(7 * 60 * 1000 );
-            System.out.println("the cache size is " + cache.size());
-
-//          federatedmodel.AverageWeights(2, 0.5, cache.size());
-            federatedmodel.fedavg(2, cache);
+            }
         }
 
-    }
-
 }
+
+
