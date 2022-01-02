@@ -61,105 +61,196 @@ public class FederatedModel {
         System.out.println("The number of client is: " + K);
         System.out.println("Start conduct fedavg aggregation");
 
-        INDArray[][] res = new INDArray[4][2];
+        INDArray[][] res = new INDArray[10][2];
 
-        INDArray weightTmp_2;
-        INDArray biasTmp_2;
-        INDArray weightTmp_4;
-        INDArray biasTmp_4;
-//        INDArray weightTmp_5;
-//        INDArray biasTmp_5;
+
+
+        INDArray weightTmp_3;
+        INDArray biasTmp_3;
         INDArray weightTmp_6;
         INDArray biasTmp_6;
-        INDArray weightTmp_7;
-        INDArray biasTmp_7;
+        INDArray weightTmp_9;
+        INDArray biasTmp_9;
+        INDArray weightTmp_12;
+        INDArray biasTmp_12;
+        INDArray weightTmp_14;
+        INDArray biasTmp_14;
+        INDArray weightTmp_16;
+        INDArray biasTmp_16;
+        INDArray weightTmp_19;
+        INDArray biasTmp_19;
+        INDArray weightTmp_20;
+        INDArray biasTmp_20;
+        INDArray weightTmp_21;
+        INDArray biasTmp_21;
+        INDArray weightTmp_22;
+        INDArray biasTmp_22;
 
-        INDArray weight_2;
-        INDArray bias_2;
-
-        INDArray weight_4;
-        INDArray bias_4;
-
-//        INDArray weight_5;
-//        INDArray bias_5;
-
+        INDArray weight_3;
+        INDArray bias_3;
         INDArray weight_6;
         INDArray bias_6;
+        INDArray weight_9;
+        INDArray bias_9;
+        INDArray weight_12;
+        INDArray bias_12;
+        INDArray weight_14;
+        INDArray bias_14;
+        INDArray weight_16;
+        INDArray bias_16;
+        INDArray weight_19;
+        INDArray bias_19;
+        INDArray weight_20;
+        INDArray bias_20;
+        INDArray weight_21;
+        INDArray bias_21;
+        INDArray weight_22;
+        INDArray bias_22;
 
-        INDArray weight_7;
-        INDArray bias_7;
 
         Map<String, INDArray> paramTable = cache.get(1);
 //        System.out.println("The weight of 2 layer is " + paramTable.get(String.format("%d_W", 2)));
 
-        weight_2 = paramTable.get(String.format("%d_W", 2));
-        bias_2 = paramTable.get(String.format("%d_b", 2));
-        weight_4 = paramTable.get(String.format("%d_W", 4));
-        bias_4 = paramTable.get(String.format("%d_b", 4));
-//        weight_5 = paramTable.get(String.format("%d_W", 5));
-//        bias_5 = paramTable.get(String.format("%d_b", 5));
+        weight_3 = paramTable.get(String.format("%d_W", 3));
+        bias_3 = paramTable.get(String.format("%d_b", 3));
         weight_6 = paramTable.get(String.format("%d_W", 6));
         bias_6 = paramTable.get(String.format("%d_b", 6));
-        weight_7 = paramTable.get(String.format("%d_W", 7));
-        bias_7 = paramTable.get(String.format("%d_b", 7));
+        weight_9 = paramTable.get(String.format("%d_W", 9));
+        bias_9 = paramTable.get(String.format("%d_b", 9));
+        weight_12 = paramTable.get(String.format("%d_W", 12));
+        bias_12 = paramTable.get(String.format("%d_b", 12));
+        weight_14 = paramTable.get(String.format("%d_W", 14));
+        bias_14 = paramTable.get(String.format("%d_b", 14));
+        weight_16 = paramTable.get(String.format("%d_W", 16));
+        bias_16 = paramTable.get(String.format("%d_b", 16));
+        weight_19 = paramTable.get(String.format("%d_W", 19));
+        bias_19 = paramTable.get(String.format("%d_b", 19));
+        weight_20 = paramTable.get(String.format("%d_W", 20));
+        bias_20 = paramTable.get(String.format("%d_b", 20));
+        weight_21 = paramTable.get(String.format("%d_W", 21));
+        bias_21 = paramTable.get(String.format("%d_b", 21));
+        weight_22 = paramTable.get(String.format("%d_W", 22));
+        bias_22 = paramTable.get(String.format("%d_b", 22));
 
         for (int i = 2; i < K + 1; i++) {
             if (cache.containsKey(i)) {
                 Map<String, INDArray> paramTableTmp = cache.get(i);
-                weightTmp_2 = paramTableTmp.get(String.format("%d_W", 2));
-                biasTmp_2 = paramTableTmp.get(String.format("%d_b", 2));
-                weightTmp_4 = paramTableTmp.get(String.format("%d_W", 4));
-                biasTmp_4 = paramTableTmp.get(String.format("%d_b", 4));
-//                weightTmp_5 = paramTableTmp.get(String.format("%d_W", 5));
-//                biasTmp_5 = paramTableTmp.get(String.format("%d_b", 5));
+
+                weightTmp_3 = paramTableTmp.get(String.format("%d_W", 2));
+                biasTmp_3 = paramTableTmp.get(String.format("%d_b", 2));
                 weightTmp_6 = paramTableTmp.get(String.format("%d_W", 6));
                 biasTmp_6 = paramTableTmp.get(String.format("%d_b", 6));
-                weightTmp_7 = paramTableTmp.get(String.format("%d_W",7));
-                biasTmp_7 = paramTableTmp.get(String.format("%d_b", 7));
-                weight_2 = weight_2.add(weightTmp_2);
-                bias_2 = bias_2.add(biasTmp_2);
-                weight_4 = weight_4.add(weightTmp_4);
-                bias_4 = bias_4.add(biasTmp_4);
-//                weight_5 = weight_5.add(weightTmp_5);
-//                bias_5 = bias_5.add(biasTmp_5);
+                weightTmp_9 = paramTableTmp.get(String.format("%d_W",9));
+                biasTmp_9 = paramTableTmp.get(String.format("%d_b", 9));
+                weightTmp_12 = paramTableTmp.get(String.format("%d_W", 12));
+                biasTmp_12 = paramTableTmp.get(String.format("%d_b", 12));
+                weightTmp_14 = paramTableTmp.get(String.format("%d_W",14));
+                biasTmp_14 = paramTableTmp.get(String.format("%d_b", 14));
+                weightTmp_16 = paramTableTmp.get(String.format("%d_W", 16));
+                biasTmp_16 = paramTableTmp.get(String.format("%d_b", 16));
+                weightTmp_19 = paramTableTmp.get(String.format("%d_W", 19));
+                biasTmp_19 = paramTableTmp.get(String.format("%d_b", 19));
+                weightTmp_20 = paramTableTmp.get(String.format("%d_W",20));
+                biasTmp_20 = paramTableTmp.get(String.format("%d_b", 20));
+                weightTmp_21 = paramTableTmp.get(String.format("%d_W", 21));
+                biasTmp_21 = paramTableTmp.get(String.format("%d_b", 21));
+                weightTmp_22 = paramTableTmp.get(String.format("%d_W",22));
+                biasTmp_22 = paramTableTmp.get(String.format("%d_b", 22));
+                weight_3 = weight_3.add(weightTmp_3);
+                bias_3 = bias_3.add(biasTmp_3);
                 weight_6 = weight_6.add(weightTmp_6);
                 bias_6 = bias_6.add(biasTmp_6);
-                weight_7 = weight_7.add(weightTmp_7);
-                bias_7 = bias_7.add(biasTmp_7);
+                weight_9 = weight_9.add(weightTmp_9);
+                bias_9 = bias_9.add(biasTmp_9);
+                weight_12 = weight_12.add(weightTmp_12);
+                bias_12 = bias_12.add(biasTmp_12);
+                weight_14 = weight_14.add(weightTmp_14);
+                bias_14 = bias_14.add(biasTmp_14);
+                weight_16 = weight_16.add(weightTmp_16);
+                bias_16 = bias_16.add(biasTmp_16);
+                weight_19 = weight_19.add(weightTmp_19);
+                bias_19 = bias_19.add(biasTmp_19);
+                weight_20 = weight_20.add(weightTmp_20);
+                bias_20 = bias_20.add(biasTmp_20);
+                weight_21 = weight_21.add(weightTmp_21);
+                bias_21 = bias_21.add(biasTmp_21);
+                weight_22 = weight_22.add(weightTmp_22);
+                bias_22 = bias_22.add(biasTmp_22);
             }
         }
 
-        weight_2 = weight_2.div(K);
-        weight_4 = weight_4.div(K);
-//        weight_5 = weight_5.div(K);
+        weight_3 = weight_3.div(K);
         weight_6 = weight_6.div(K);
-        weight_7 = weight_7.div(K);
-        bias_2 = bias_2.div(K);
-        bias_4 = bias_4.div(K);
-//        bias_5 = bias_5.div(K);
+        weight_9 = weight_9.div(K);
+        weight_12 = weight_12.div(K);
+        weight_14 = weight_3.div(K);
+        weight_16 = weight_6.div(K);
+        weight_19 = weight_19.div(K);
+        weight_20 = weight_20.div(K);
+        weight_21 = weight_21.div(K);
+        weight_22 = weight_22.div(K);
+
+        bias_3 = bias_3.div(K);
         bias_6 = bias_6.div(K);
-        bias_7 = bias_7.div(K);
+        bias_9 = bias_9.div(K);
+        bias_12 = bias_12.div(K);
+        bias_14 = bias_14.div(K);
+        bias_16 = bias_16.div(K);
+        bias_19 = bias_19.div(K);
+        bias_20 = bias_20.div(K);
+        bias_21 = bias_21.div(K);
+        bias_22 = bias_22.div(K);
 
 
-        model.setParam(String.format("%d_W", 2), weight_2);
-        model.setParam(String.format("%d_b", 2), bias_2);
-        model.setParam(String.format("%d_W", 4), weight_4);
-        model.setParam(String.format("%d_b", 4), bias_4);
-
+        model.setParam(String.format("%d_W", 3), weight_3);
+        model.setParam(String.format("%d_b", 3), bias_3);
         model.setParam(String.format("%d_W", 6), weight_6);
         model.setParam(String.format("%d_b", 6), bias_6);
-        model.setParam(String.format("%d_W", 7), weight_7);
-        model.setParam(String.format("%d_b", 7), bias_7);
 
-        res[0][0] = weight_2;
-        res[0][1] = bias_2;
-        res[1][0] = weight_4;
-        res[1][1] = bias_4;
+        model.setParam(String.format("%d_W", 9), weight_9);
+        model.setParam(String.format("%d_b", 9), bias_9);
+        model.setParam(String.format("%d_W", 12), weight_12);
+        model.setParam(String.format("%d_b", 12), bias_12);
 
-        res[2][0] = weight_6;
-        res[2][1] = bias_6;
-        res[3][0] = weight_7;
-        res[3][1] = bias_7;
+        model.setParam(String.format("%d_W", 14), weight_14);
+        model.setParam(String.format("%d_b", 14), bias_14);
+        model.setParam(String.format("%d_W", 16), weight_16);
+        model.setParam(String.format("%d_b", 16), bias_16);
+
+        model.setParam(String.format("%d_W", 19), weight_19);
+        model.setParam(String.format("%d_b", 19), bias_19);
+        model.setParam(String.format("%d_W", 20), weight_20);
+        model.setParam(String.format("%d_b", 20), bias_20);
+
+        model.setParam(String.format("%d_W", 21), weight_21);
+        model.setParam(String.format("%d_b", 21), bias_21);
+        model.setParam(String.format("%d_W", 22), weight_22);
+        model.setParam(String.format("%d_b", 22), bias_22);
+
+        res[0][0] = weight_3;
+        res[0][1] = bias_3;
+        res[1][0] = weight_6;
+        res[1][1] = bias_6;
+
+        res[2][0] = weight_9;
+        res[2][1] = bias_9;
+        res[3][0] = weight_12;
+        res[3][1] = bias_12;
+
+        res[4][0] = weight_14;
+        res[4][1] = bias_14;
+        res[5][0] = weight_16;
+        res[5][1] = bias_16;
+
+        res[6][0] = weight_19;
+        res[6][1] = bias_19;
+        res[7][0] = weight_20;
+        res[7][1] = bias_20;
+
+        res[8][0] = weight_21;
+        res[8][1] = bias_21;
+        res[9][0] = weight_22;
+        res[9][1] = bias_22;
 
 
         System.out.println("\nWriting server model...");
