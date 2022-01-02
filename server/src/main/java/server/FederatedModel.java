@@ -183,8 +183,8 @@ public class FederatedModel {
         weight_6 = weight_6.div(K);
         weight_9 = weight_9.div(K);
         weight_12 = weight_12.div(K);
-        weight_14 = weight_3.div(K);
-        weight_16 = weight_6.div(K);
+        weight_14 = weight_14.div(K);
+        weight_16 = weight_16.div(K);
         weight_19 = weight_19.div(K);
         weight_20 = weight_20.div(K);
         weight_21 = weight_21.div(K);
